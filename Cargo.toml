@@ -9,7 +9,7 @@ edition = "2018"
 [dependencies]
 telegram-bot = "0.7"
 bytes = "0.5"
-tokio = { version = "0.2", features = ["fs"]}
+tokio = { version = "0.2", features = ["full"]}
 
 tracing = "0.1.9"
 tracing-futures = "0.2"

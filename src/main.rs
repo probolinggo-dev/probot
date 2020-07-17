@@ -34,6 +34,7 @@ async fn main() -> Result<(), Error> {
 
                 // respond to @here
                 if data.contains("@here ")
+                    || data == "@here"
                     || data.contains(" @here")
                     || data.contains("\n@here")
                     || data.contains("@here\n")
