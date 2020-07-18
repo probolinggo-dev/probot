@@ -1,0 +1,18 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+  bin:
+    image: rust
+    command: bash -c "cd myapp && cargo install diesel_cli && diesel setup && diesel migration run && cargo run"
+    environment:
+        TELEGRAM_BOT_TOKEN: 541698446:AAEPqAlA4MmIfgyXAoAqszbFzJBo_dMFEuI
+        DATABASE_URL: postgres://postgres:password@db/telegram_bot
+    volumes:
+      - .:/myapp
+    depends_on:
+      - db
