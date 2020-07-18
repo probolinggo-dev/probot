@@ -23,6 +23,7 @@ hyper-rustls = { version = "0.19", optional = true }
 dotenv = "0.15.0"
 diesel = { version = "1.4.4", features = ["postgres", "chrono"] }
 chrono = "0.4.13"
+redis = "0.16.0"
 
 [dev-dependencies]
 tracing-subscriber = "0.1.5"

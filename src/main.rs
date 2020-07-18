@@ -24,12 +24,14 @@ async fn main() -> Result<(), Error> {
                 let user_id = &cloned_message.from.id.to_string();
                 let channel_id = &cloned_message.chat.id().to_string();
                 let username = &cloned_message.from.username.unwrap();
+                let cache_key = channel_id.to_owned() + user_id;
 
                 // record channel activity
                 if user_id != channel_id {
-                    record_activity(&connection, channel_id, user_id, username).unwrap();
-                } else {
-                    println!("not a group!")
+                    if !get_activity_cache(&cache_key) {
+                        record_activity(&connection, channel_id, user_id, username).unwrap();
+                        set_activity_cache(&cache_key).unwrap();
+                    }
                 }
 
                 // respond to @here

@@ -1,6 +1,7 @@
 #[macro_use]
 extern crate diesel;
 extern crate dotenv;
+extern crate redis;
 
 pub mod models;
 pub mod schema;
@@ -9,6 +10,7 @@ use self::models::{Channel, ChannelUser, NewChannel, NewChannelUser, NewUser, Us
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use dotenv::dotenv;
+use redis::Commands;
 use std::env;
 use std::error::Error;
 
@@ -22,6 +24,26 @@ pub fn establish_connection() -> PgConnection {
 fn get_user<'a>(conn: &PgConnection, id: &'a str) -> Option<User> {
     use self::schema::users::dsl::users;
     users.find(id).first(conn).optional().unwrap()
+}
+
+pub fn set_activity_cache<'a>(key: &'a str) -> Result<(), Box<dyn Error>> {
+    let redis_url = env::var("REDIS_URL").expect("REDIS_URL must be set");
+    let client = redis::Client::open(redis_url)?;
+    let mut con = client.get_connection()?;
+
+    con.set_ex(key, 1u8, 3600)?;
+
+    Ok(())
+}
+
+pub fn get_activity_cache<'a>(key: &'a str) -> bool {
+    let redis_url = env::var("REDIS_URL").expect("REDIS_URL must be set");
+    let client = redis::Client::open(redis_url).unwrap();
+    let mut con = client.get_connection().unwrap();
+
+    let result: u8 = con.get(key).unwrap_or(0u8);
+
+    result == 1
 }
 
 fn create_user<'a>(
