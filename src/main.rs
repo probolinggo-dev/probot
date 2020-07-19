@@ -32,25 +32,25 @@ async fn main() -> Result<(), Error> {
                         record_activity(&connection, channel_id, user_id, username).unwrap();
                         set_activity_cache(&cache_key).unwrap();
                     }
-                }
 
-                // respond to @here
-                if data.contains("@here ")
-                    || data == "@here"
-                    || data.contains(" @here")
-                    || data.contains("\n@here")
-                    || data.contains("@here\n")
-                {
-                    let users = get_channel_users(&connection, channel_id);
-                    let usernames: Vec<String> = users
-                        .into_iter()
-                        .map(|user| "@".to_owned() + &user.username)
-                        .rev()
-                        .collect();
-                    let usernames = usernames.join(" ");
+                    // respond to @here
+                    if data.contains("@here ")
+                        || data == "@here"
+                        || data.contains(" @here")
+                        || data.contains("\n@here")
+                        || data.contains("@here\n")
+                    {
+                        let users = get_channel_users(&connection, channel_id);
+                        let usernames: Vec<String> = users
+                            .into_iter()
+                            .map(|user| "@".to_owned() + &user.username)
+                            .rev()
+                            .collect();
+                        let usernames = usernames.join(" ");
 
-                    api.send(message.text_reply(format!("{}", usernames)))
-                        .await?;
+                        api.send(message.text_reply(format!("{}", usernames)))
+                            .await?;
+                    }
                 }
             }
         }
