@@ -17,9 +17,12 @@ impl<'a> Broadcast<'a> {
             self.api.spawn(c_id.text(&self.message))
         }).collect::<Vec<_>>(); 
 
-        join_all(
+       let res = join_all(
             futures_message
         ).await;
+
+        println!("{:?}", res);
+
         Ok(())
     }
 }
