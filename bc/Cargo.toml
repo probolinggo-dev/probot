@@ -1,0 +1,11 @@
+[package]
+name = "bc"
+version = "0.1.0"
+authors = ["miqbalrr <iqb4lcakep@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+futures = "0.3"
+telegram-bot = "0.7"

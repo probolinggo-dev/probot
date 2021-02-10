@@ -86,6 +86,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "bc"
+version = "0.1.0"
+dependencies = [
+ "futures",
+ "telegram-bot",
+]
+
+[[package]]
 name = "bitflags"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -975,6 +983,7 @@ dependencies = [
 name = "probot"
 version = "0.1.0"
 dependencies = [
+ "bc",
  "bytes",
  "chrono",
  "diesel",
